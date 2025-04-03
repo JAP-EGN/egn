@@ -30,9 +30,30 @@
 <body>
     <img src="logo.png" alt="EGN Logo" class="logo">
     <div class="message">
-        <h1>EGN Members' Universe is currently running.</h1>
-        <p>Have a great day!</p>
+        <h1>EGN Members' Universe</h1>
+        <p id="statusMessage">Checking site status...</p>
         <p>Contact <a href="mailto:MUsupport@egn.com">MUsupport@egn.com</a> if you have any questions.</p>
     </div>
+
+    <script>
+        function checkSiteStatus() {
+            fetch('https://membersuniverse.egn.com', { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('statusMessage').textContent = 'The site is running';
+                    } else {
+                        document.getElementById('statusMessage').textContent = 'The site is unavailable';
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('statusMessage').textContent = 'The site is unavailable';
+                });
+        }
+
+        // Check the site status every 30 seconds
+        setInterval(checkSiteStatus, 30000);
+        // Initial check
+        checkSiteStatus();
+    </script>
 </body>
 </html>
