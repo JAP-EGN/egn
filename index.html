@@ -36,24 +36,23 @@
     </div>
 
     <script>
-        function checkSiteStatus() {
-            fetch('https://membersuniverse.egn.com', { method: 'HEAD' })
+        function pingIP(ip) {
+            const start = new Date().getTime();
+            fetch(`http://${ip}`)
                 .then(response => {
-                    if (response.ok) {
-                        document.getElementById('statusMessage').textContent = 'The site is running';
-                    } else {
-                        document.getElementById('statusMessage').textContent = 'The site is unavailable';
-                    }
+                    const end = new Date().getTime();
+                    const time = end - start;
+                    document.getElementById("statusMessage").textContent = `Ping time: ${time} ms`;
                 })
                 .catch(error => {
-                    document.getElementById('statusMessage').textContent = 'The site is unavailable';
+                    document.getElementById("statusMessage").textContent = `Error: ${error}`;
                 });
         }
 
-        // Check the site status every 30 seconds
-        setInterval(checkSiteStatus, 30000);
-        // Initial check
-        checkSiteStatus();
+        // Ping the IP address when the page loads
+        window.onload = function() {
+            pingIP('20.103.214.244');
+        };
     </script>
 </body>
 </html>
